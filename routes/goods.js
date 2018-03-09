@@ -5,7 +5,6 @@ const checkAuth = require('../middleware/check-auth');
 const uploadImage = require('../middleware/multerUse');
 
 router.get('/', GoodController.goods_get_all);
-router.post('/addCart', GoodController.goods_add_cart)
 router.get('/list', GoodController.goods_get_conditional_list)
 router.get('/search/:keyWord', checkAuth, GoodController.goods_search_good);
 router.get('/:goodId', checkAuth, GoodController.goods_get_good);

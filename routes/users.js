@@ -13,5 +13,6 @@ router.post('/delAddress', UserController.users_address_del)
 router.post('/addOrder', UserController.users_order_add_to_bills)
 router.post('/addOrderToUsers', UserController.users_order_add_to_users)
 router.post('/edituserInfo', UserController.users_edit_user_info)
+router.post('/addCart', UserController.users_add_cart)
 
 module.exports = router

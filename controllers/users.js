@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const User = require('./../models/user')
 const Bill = require('./../models/bill')
+const Good = require('./../models/good')
 
 exports.users_login = function (req,res,next) {
     var param = {
@@ -268,6 +269,84 @@ exports.users_edit_user_info = function (req, res, next) {
                 msg:'',
                 result:'suc'
             });
+        }
+    })
+}
+
+
+exports.users_add_cart = function (req, res, next) {
+    let userId = req.cookies.userId
+    let goodsName = req.body.goodsName
+    let goodsNum = req.body.goodsNum
+
+
+
+    User.findOne({userId: userId}).populate('cartList.goodsInfo').then((userDoc, err) => {
+
+        if (err) {
+            res.json({
+                status: "1",
+                msg: err.message
+            })
+        } else {
+            if(userDoc){
+                var goodsItem = ''
+                userDoc.cartList.forEach(function (item) {
+                    console.log('#########')
+                    console.log(item)
+                    if(item.goodsInfo.goodsName === goodsName){
+                        goodsItem = item;
+                        item.goodsNum += goodsNum;
+                    }
+                });
+                if(goodsItem){
+                    userDoc.save(function (err2,doc2) {
+                        if(err2){
+                            res.json({
+                                status:"1",
+                                msg:err2.message
+                            })
+                        }else{
+                            res.json({
+                                status:'0',
+                                msg:'',
+                                result:'suc'
+                            })
+                        }
+                    })
+                }else{
+                    Good.findOne({goodsName: goodsName}, function (err1,doc) {
+                        if(err1){
+                            res.json({
+                                status:"1",
+                                msg:err1.message
+                            })
+                        }else{
+                            if(doc){
+                                let goodItem = {
+                                    goodsInfo: doc._id,
+                                    goodsNum: goodsNum
+                                }
+                                userDoc.cartList.push(goodItem);
+                                userDoc.save(function (err2,doc2) {
+                                    if(err2){
+                                        res.json({
+                                            status:"1",
+                                            msg:err2.message
+                                        })
+                                    }else{
+                                        res.json({
+                                            status:'0',
+                                            msg:'',
+                                            result:'suc'
+                                        })
+                                    }
+                                })
+                            }
+                        }
+                    });
+                }
+            }
         }
     })
 }
