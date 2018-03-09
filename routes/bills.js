@@ -3,7 +3,7 @@ const router = express.Router();
 const BillController = require('../controllers/bills');
 const checkAuth = require('../middleware/check-auth');
 
-router.get('/', checkAuth, BillController.bills_get_all);
+router.get('/state/:state', checkAuth, BillController.bills_get_all);
 router.post('/create', BillController.bills_create_bill);
 router.get('/:billId', BillController.bills_get_bill);
 router.patch('/:billId', BillController.bills_update_bill);
