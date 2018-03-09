@@ -50,7 +50,8 @@ exports.goods_create_good = (req, res, next) => {
           goodsSize: req.body.goodsSize,
           goodsPrice: req.body.goodsPrice,
           goodsImage: req.file.path,
-          goodsCategory:req.body.goodsCategory
+          goodsCategory:req.body.goodsCategory,
+          goodsDescription:req.body.goodsDescription
         });
         good
           .save()
@@ -122,7 +123,9 @@ exports.goods_update_good = (req, res, next) => {
     goodsName: req.body.goodsName,
     goodsSize: req.body.goodsSize,
     goodsCategory: req.body.goodsCategory,
-    goodsPrice: req.body.goodsPrice
+    goodsPrice: req.body.goodsPrice,
+    goodsSold: req.body.goodsSold,
+    goodsDescription:req.body.goodsDescription
   };
   Good.updateMany({ _id: _id }, good)
     .then(doc => {

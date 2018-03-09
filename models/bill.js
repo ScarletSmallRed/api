@@ -33,7 +33,8 @@ const billSchema = mongoose.Schema({
   invNumber: { type: Number, default: null },
   operator: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Clerk'
+    ref: 'Clerk',
+    default: null
   },
   state: { type: Number, default: 0 }
 });

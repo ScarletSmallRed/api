@@ -2,7 +2,34 @@ const mongoose = require('mongoose');
 const Bill = require('../models/bill');
 
 exports.bills_get_all = (req, res, next) => {
-  Bill.find()
+  if (req.params.state === '999') {
+    Bill.find()
+      .populate('goodsList.goodsInfo operator')
+      .then(doc => {
+        console.log(doc);
+        res.send(doc);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return;
+  }
+  if (req.userData.role === 'peiDan' && req.params.state === '666') {
+    Bill.find({
+      state: req.params.state,
+      operator: { _id: req.userData.clerkId }
+    })
+      .populate('goodsList.goodsInfo operator')
+      .then(doc => {
+        console.log(doc);
+        res.send(doc);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return;
+  }
+  Bill.find({ state: req.params.state })
     .populate('goodsList.goodsInfo operator')
     .then(doc => {
       console.log(doc);

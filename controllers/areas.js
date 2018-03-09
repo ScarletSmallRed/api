@@ -37,6 +37,7 @@ exports.areas_create_area = (req, res, next) => {
         const area = new Area({
             areaName: req.body.areaName,
             areaTime: req.body.areaTime,
+            areaStartTime: req.body.areaStartTime,
             areaDescription: req.body.areaDescription,
         });
         area
@@ -64,13 +65,12 @@ exports.areas_update_area = (req, res, next) => {
   const area = {
     areaName: req.body.areaName,
     areaTime: req.body.areaTime,
+    areaStartTime: req.body.areaStartTime,
     areaDescription: req.body.areaDescription
   };
-  console.log('#################')
-  console.log(area)
   Area.updateMany({ _id: _id }, area)
     .then(doc => {
-      console.log(doc);
+      
       if (doc.n !== 0) {
         res.json({
           status: 0,

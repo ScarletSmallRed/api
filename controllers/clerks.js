@@ -102,7 +102,8 @@ exports.clerks_login_clerk = (req, res, next) => {
           const token = jwt.sign(
             {
               email: doc[0].email,
-              clerkId: doc[0]._id
+              clerkId: doc[0]._id,
+              role: doc[0].role
             },
             process.env.JWT_KEY,
             {
