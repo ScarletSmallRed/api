@@ -193,3 +193,15 @@ exports.clerks_update_clerk = (req, res, next) => {
     }
   });
 };
+
+exports.clerks_performance_recording = (req, res, next) => {
+  const _id = req.params.clerkId;
+  Clerk.updateMany({ _id: _id }, req.body)
+    .then(doc => {
+      console.log(doc);
+      res.send(doc);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

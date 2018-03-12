@@ -19,7 +19,11 @@ const billSchema = mongoose.Schema({
       match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     userName: { type: String },
-    address: {
+    homeAddress: {
+      type: String,
+      required: true
+    },
+    areaAddress: {
       type: String,
       required: true
     },
@@ -29,6 +33,7 @@ const billSchema = mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
   doNumber: { type: Number },
   shippingDate: { type: Date, default: null },
+  travelNumber: { type: Number, default: null },
   completeDate: { type: Date, default: null },
   invNumber: { type: Number, default: null },
   operator: {

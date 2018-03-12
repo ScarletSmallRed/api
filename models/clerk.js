@@ -11,7 +11,8 @@ const clerkSchema = mongoose.Schema({
   name: { type: String, required: true },
   role: { type: String, default: null },
   isAdmin: { type: Boolean, default: false },
-  time: { type: Date, default: Date.now }
+  time: { type: Date, default: Date.now },
+  performance: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Clerk', clerkSchema);
