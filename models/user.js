@@ -5,6 +5,10 @@ var userSchema = new mongoose.Schema({
     userName:String,
     userPwd:String,
     userAddress: String,
+    userAreaAddress: {
+        type: String,
+        require: true
+    },
     userPhone: String,
     userEmail: String,
     userPostCode: String,
