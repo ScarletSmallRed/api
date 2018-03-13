@@ -11,7 +11,6 @@ router.post('/login', ClerkController.clerks_login_clerk);
 router.patch('/:clerkId', checkAuth, ClerkController.clerks_update_clerk);
 router.patch(
   '/performance/:clerkId',
-  checkAuth,
   ClerkController.clerks_performance_recording
 );
 router.delete('/:clerkId', checkAuth, ClerkController.clerks_delete_clerk);
