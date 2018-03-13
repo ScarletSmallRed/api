@@ -199,7 +199,10 @@ exports.clerks_performance_recording = (req, res, next) => {
   Clerk.updateMany({ _id: _id }, req.body)
     .then(doc => {
       console.log(doc);
-      res.send(doc);
+      res.json({
+        status: 0,
+        message: '成功更新配送单数'
+      });
     })
     .catch(err => {
       console.log(err);
