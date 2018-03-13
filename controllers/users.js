@@ -279,8 +279,6 @@ exports.users_add_cart = function (req, res, next) {
     let goodsName = req.body.goodsName
     let goodsNum = req.body.goodsNum
 
-
-
     User.findOne({userId: userId}).populate('cartList.goodsInfo').then((userDoc, err) => {
 
         if (err) {
@@ -292,8 +290,6 @@ exports.users_add_cart = function (req, res, next) {
             if(userDoc){
                 var goodsItem = ''
                 userDoc.cartList.forEach(function (item) {
-                    console.log('#########')
-                    console.log(item)
                     if(item.goodsInfo.goodsName === goodsName){
                         goodsItem = item;
                         item.goodsNum += goodsNum;
