@@ -1,43 +1,68 @@
 var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
-    userId:String,
-    userName:String,
+    userId: {
+        type:String,
+        require: true,
+        unique: true
+    },
+    userName: {
+        type: String,
+        require: true,
+    },
     userPwd:String,
-    userAddress: String,
+    userAddress: {
+        type: String,
+        default: ''
+    },
     userAreaAddress: {
         type: String,
-        require: true
+        default: ''
     },
-    userPhone: String,
-    userEmail: String,
-    userPostCode: String,
-    cartList:[
-        {
-            goodsInfo:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'goods',
-                require: true
-            },
-            goodsNum: {
-                type: Number,
-                require: true
-            },
-            goodsChecked: {
-                type: String,
-                require: true,
-                default: '1'
+    userPhone: {
+        type: String,
+        default: ''
+    },
+    userEmail: {
+        type: String,
+        default: ''
+    },
+    userPostCode: {
+        type: String,
+        default: ''
+    },
+    cartList: {
+        type:[
+            {
+                goodsInfo:{
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'goods',
+                    require: true
+                },
+                goodsNum: {
+                    type: Number,
+                    require: true
+                },
+                goodsChecked: {
+                    type: String,
+                    require: true,
+                    default: '1'
+                }
             }
-        }
-    ],
-    userBills: [
-        {
-            billInfo: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Bill'
+            ],
+        default: []
+    },
+    userBills: {
+        type:[
+            {
+                billInfo: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Bill'
+                }
             }
-        }
-    ]
+            ],
+        default: []
+    }
 });
 
 module.exports = mongoose.model("User",userSchema);
