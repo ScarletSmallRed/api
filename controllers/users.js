@@ -4,8 +4,9 @@ const Bill = require('./../models/bill')
 const Good = require('./../models/good')
 
 exports.users_login = function (req,res,next) {
+    console.log(req.body)
     var param = {
-        "userName":req.body.userName,
+        "userId":req.body.userId,
         "userPwd": req.body.userPwd
     }
     User.findOne(param, function (err,doc) {
@@ -210,7 +211,7 @@ exports.users_order_add_to_bills = function (req, res, next) {
         if(err){
             res.json({
                 status:'1',
-                msg:err3.message,
+                msg:err.message,
                 result:''
             });
         } else {
@@ -345,4 +346,60 @@ exports.users_add_cart = function (req, res, next) {
             }
         }
     })
+}
+
+exports.users_register = function (req, res, next) {
+    let registeredUser = req.body
+    console.log(registeredUser)
+    // User.find({userId: registeredUser.userId}).then((userDoc, err) => {
+    //     if (err) {
+    //         res.json({
+    //             status: '1',
+    //             msg: err.message
+    //         })
+    //     } else {
+    //         if (!userDoc) {
+    //             User.create(registeredUser).then((doc, err) => {
+    //                 if(err){
+    //                     res.json({
+    //                         status:'1',
+    //                         msg:err.message,
+    //                         result:''
+    //                     });
+    //                 } else {
+    //                     res.json({
+    //                         status: '0',
+    //                         msg: 'Creating user successfully!',
+    //                         result: doc
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     }
+    // })
+
+
+    User.create(registeredUser).then((doc, err) => {
+        if(err){
+            res.json({
+                status:'1',
+                msg:err.message,
+                result:''
+            });
+        } else {
+            res.json({
+                status: '0',
+                msg: 'Creating user successfully!',
+                result: doc
+            })
+        }
+    }).catch(err => {
+        if (err) {
+            res.json({
+                status: '403',
+                msg: err.message
+            })
+        }
+    })
+
 }
