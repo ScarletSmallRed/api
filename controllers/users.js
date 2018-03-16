@@ -4,7 +4,7 @@ const Bill = require('./../models/bill')
 const Good = require('./../models/good')
 
 exports.users_login = function (req,res,next) {
-    console.log(req)
+    console.log(req.body)
     var param = {
         "userId":req.body.userId,
         "userPwd": req.body.userPwd
