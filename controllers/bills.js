@@ -2,8 +2,16 @@ const mongoose = require('mongoose');
 const Bill = require('../models/bill');
 
 exports.bills_get_all = (req, res, next) => {
+  let currentPage =
+    parseInt(req.params.page) > 0 ? parseInt(req.params.page) : 1;
+  let pageSize =
+    parseInt(req.params.pageSize) > 0 ? parseInt(req.params.pageSize) : 10;
+  // 要跳过多少条
+  let skip = (currentPage - 1) * pageSize;
   if (req.params.state === '999') {
     Bill.find()
+      .limit(pageSize)
+      .skip(skip)
       .populate('goodsList.goodsInfo operator')
       .then(doc => {
         console.log(doc);
@@ -14,11 +22,13 @@ exports.bills_get_all = (req, res, next) => {
       });
     return;
   }
-  if (req.userData.role === 'peiDan' && req.params.state === '666') {
+  if (req.userData.role === '配单员' && req.params.state === '666') {
     Bill.find({
       state: req.params.state,
       operator: { _id: req.userData.clerkId }
     })
+      .limit(pageSize)
+      .skip(skip)
       .populate('goodsList.goodsInfo operator')
       .then(doc => {
         console.log(doc);
@@ -30,6 +40,8 @@ exports.bills_get_all = (req, res, next) => {
     return;
   }
   Bill.find({ state: req.params.state })
+    .limit(pageSize)
+    .skip(skip)
     .populate('goodsList.goodsInfo operator')
     .then(doc => {
       console.log(doc);
@@ -67,18 +79,35 @@ exports.bills_create_bill = (req, res, next) => {
 
 exports.bills_update_bill = (req, res, next) => {
   const _id = req.params.billId;
-  if (req.body.biaoJi) {
-    Bill.update(
-      {
-        _id: _id,
-        goodsList: { $elemMatch: { _id: req.body._id } }
-      },
-      { $set: { 'goodsList.$.actualQuantity': req.body.actualQuantity } }
-    ).then(doc => {
-      res.send(doc);
-    });
+  // if (req.body.biaoJi) {
+  //   Bill.update(
+  //     {
+  //       _id: _id,
+  //       goodsList: { $elemMatch: { _id: req.body._id } }
+  //     },
+  //     { $set: { 'goodsList.$.actualQuantity': req.body.actualQuantity } }
+  //   ).then(doc => {
+  //     res.send(doc);
+  //   });
+  //   return;
+  // }
+  if (req.body.actualQuantity) {
+    const data = req.body.actualQuantity;
+    Bill.findById(_id)
+      .then(doc => {
+        for (var i = 0; i < doc.goodsList.length; i++) {
+          doc.goodsList[i].actualQuantity = data[i];
+          doc.markModified('actualQuantity');
+          doc.save();
+        }
+        res.send(doc);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     return;
   }
+
   Bill.update({ _id: _id }, req.body)
     .then(doc => {
       res.send(doc);
@@ -152,12 +181,20 @@ exports.bills_delete_bill = (req, res, next) => {
 };
 
 exports.bills_search_bill = (req, res, next) => {
+  let currentPage =
+    parseInt(req.params.page) > 0 ? parseInt(req.params.page) : 1;
+  let pageSize =
+    parseInt(req.params.pageSize) > 0 ? parseInt(req.params.pageSize) : 10;
+  // 要跳过多少条
+  let skip = (currentPage - 1) * pageSize;
   Bill.find({
     orderDate: {
       $gte: new Date(req.body.start),
       $lte: new Date(req.body.end)
     }
   })
+    .limit(pageSize)
+    .skip(skip)
     .populate('goodsList.goodsInfo operator')
     .then(doc => {
       console.log(doc);

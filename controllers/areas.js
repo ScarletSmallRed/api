@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Area = require('../models/area');
 
 exports.areas_get_all = (req, res, next) => {
-    Area.find()
+  Area.find()
     .then(doc => {
       console.log(doc);
       res.send(doc);
@@ -12,10 +12,9 @@ exports.areas_get_all = (req, res, next) => {
     });
 };
 
-
 exports.areas_get_area = (req, res, next) => {
-    const _id = req.params.areaId;
-    Area.findById({ _id: _id })
+  const _id = req.params.areaId;
+  Area.findById({ _id: _id })
     .then(doc => {
       res.send(doc);
       console.log(doc);
@@ -31,14 +30,14 @@ exports.areas_create_area = (req, res, next) => {
       if (doc.length !== 0) {
         res.json({
           status: 1,
-          massage: '该产品已存在'
+          massage: '该区域已存在'
         });
       } else {
         const area = new Area({
-            areaName: req.body.areaName,
-            areaTime: req.body.areaTime,
-            areaStartTime: req.body.areaStartTime,
-            areaDescription: req.body.areaDescription,
+          areaName: req.body.areaName,
+          areaTime: req.body.areaTime,
+          areaStartTime: req.body.areaStartTime,
+          areaDescription: req.body.areaDescription
         });
         area
           .save()
@@ -70,17 +69,16 @@ exports.areas_update_area = (req, res, next) => {
   };
   Area.updateMany({ _id: _id }, area)
     .then(doc => {
-      
       if (doc.n !== 0) {
         res.json({
           status: 0,
-          message: '产品数据更新成功'
+          message: '区域数据更新成功'
         });
       } else {
-        console.log('产品不存在');
+        console.log('区域不存在');
         res.json({
           status: 1,
-          message: '产品不存在'
+          message: '区域不存在'
         });
       }
     })
@@ -90,7 +88,7 @@ exports.areas_update_area = (req, res, next) => {
 };
 
 exports.areas_delete_area = (req, res, next) => {
-    Area.findOne({ _id: req.params.areaId }, (err, areaDoc) => {
+  Area.findOne({ _id: req.params.areaId }, (err, areaDoc) => {
     if (err) {
       res.json({
         status: '1',
@@ -98,16 +96,16 @@ exports.areas_delete_area = (req, res, next) => {
         result: ''
       });
     } else {
-        Area.remove({ _id: req.params.areaId })
+      Area.remove({ _id: req.params.areaId })
         .then(doc => {
           console.log(doc);
           if (doc.n === 1) {
             res.status(200).json({
-              message: '删除产品成功'
+              message: '删除区域成功'
             });
           } else {
             res.status(404).json({
-              message: '产品不存在'
+              message: '区域不存在'
             });
           }
         })
